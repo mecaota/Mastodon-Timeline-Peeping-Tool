@@ -11,11 +11,12 @@
 </head>
 <body>
     <h3>Mastodon Timeline Peeping Tool <small>Made by <a href="https://toot.yukimochi.jp/@YUKIMOCHI">YUKIMOCHI</a></small></h3>
-    <p>インスタンスのドメインを入力してください。（秒速20トゥートまで追従します）</p>
+    <p>インスタンスのドメインを入力してください。（最新20トゥートを表示します。取得は5秒に1回まで。古いものは、下に残ります。）</p>
+    <p style="color:red">お知らせとお詫び：インスタンスへのアクセス負荷を抑えるため、タイムラインを自動で流れないように仕様を変更させていただきました。<br />また、インスタンスのオーナー様にも負荷の原因となりますツールを公開いたしましたことをお詫び申し上げます。</p>
     <input type="text" id="Instance" />
-    <input type="button" id="Stream_Local" value="ストリームを開始する(ローカル)" />
-    <input type="button" id="Stream_Federate" value="ストリームを開始する(連合)" />
-    <input type="button" id="Stream_Stop" value="ストリームを停止する" disabled="disabled" />
+    <input type="button" id="Local" value="ローカルTLを取得する。" />
+    <input type="button" id="Federate" value="連合TLを取得する。" />
+    <input type="button" id="Clean" value="リセット" />
     <br />
     <table class="table">
         <tbody id="Mastodon">

@@ -2,45 +2,47 @@
 //This software is released under the MIT License.
 //Copyright (c) 2017 YUKIMOCHI Laboratory
 
-var Enable_Stream = false;
-var Is_Fedrate = false;
+var Is_Federate = false;
 var latest_head = 0;
 
-$("#Stream_Local").click(function () {
-    Enable_Stream = true;
-    Is_Fedrate = false;
+$("#Local").click(function () {
+    Is_Federate = false;
+    $("#Instance").attr("disabled", "disabled");
+    $("#Local").attr("disabled", "disabled");
+    $("#Federate").attr("disabled", "disabled");
+    Fetch_toot();
+
+    window.setTimeout("Restart_Local()", 5000);
+});
+
+$("#Federate").click(function () {
+    Is_Federate = true
+    $("#Instance").attr("disabled", "disabled");
+    $("#Local").attr("disabled", "disabled");
+    $("#Federate").attr("disabled", "disabled");
+    Fetch_toot();
+
+    window.setTimeout("Restart_Federate()", 5000);
+});
+
+$("#Clean").click(function () {
     latest_head = 0;
-    Lock_Button();
-    Stream_Fetch();
+    $("#Instance").removeAttr("disabled");
+    $("#Local").removeAttr("disabled");
+    $("#Federate").removeAttr("disabled");
 });
 
-$("#Stream_Federate").click(function () {
-    Enable_Stream = true;
-    Is_Fedrate = true
-    latest_head = 0;
-    Lock_Button();
-    Stream_Fetch();
-});
-
-$("#Stream_Stop").click(function () {
-    Enable_Stream = false;
-});
-
-function Lock_Button() {
-    $("#Stream_Local").attr("disabled", "disabled");
-    $("#Stream_Federate").attr("disabled", "disabled");
-    $("#Stream_Stop").removeAttr("disabled");
+function Restart_Local() {
+    $("#Local").removeAttr("disabled");
 }
 
-function UnLock_Button() {
-    $("#Stream_Local").removeAttr("disabled");
-    $("#Stream_Federate").removeAttr("disabled");
-    $("#Stream_Stop").attr("disabled", "disabled");
+function Restart_Federate() {
+    $("#Federate").removeAttr("disabled");
 }
 
-function Stream_Fetch() {
+function Fetch_toot() {
     var UrlBase = "";
-    if (Is_Fedrate) {
+    if (Is_Federate) {
         UrlBase = 'https://' + $("#Instance").val() + '/api/v1/timelines/public';
     }
     else {
@@ -64,10 +66,4 @@ function Stream_Fetch() {
             latest_head = json[0].id;
         }
     });
-    if (Enable_Stream) {
-        window.setTimeout("Stream_Fetch()", 1000);
-    }
-    else {
-        UnLock_Button();
-    }
 }
