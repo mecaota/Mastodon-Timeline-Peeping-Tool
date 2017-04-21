@@ -12,7 +12,7 @@ $("#Local").click(function () {
     $("#Federate").attr("disabled", "disabled");
     Fetch_toot();
 
-    window.setTimeout("Restart_Local()", 5000);
+    window.setTimeout(Restart_Local, 5000);
 });
 
 $("#Federate").click(function () {
@@ -22,7 +22,7 @@ $("#Federate").click(function () {
     $("#Federate").attr("disabled", "disabled");
     Fetch_toot();
 
-    window.setTimeout("Restart_Federate()", 5000);
+    window.setTimeout(Restart_Federate, 5000);
 });
 
 $("#Clean").click(function () {
