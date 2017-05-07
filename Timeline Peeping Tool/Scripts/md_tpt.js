@@ -3,6 +3,7 @@
 //Copyright (c) 2017 YUKIMOCHI Laboratory
 
 var Is_Federate = false;
+var Memory = false;
 var latest_head = 0;
 
 $("#Local").click(function () {
@@ -27,9 +28,28 @@ $("#Federate").click(function () {
 
 $("#Clean").click(function () {
     latest_head = 0;
+    $('#Latest_ID').val(0);
     $("#Instance").removeAttr("disabled");
     $("#Local").removeAttr("disabled");
     $("#Federate").removeAttr("disabled");
+    Memory = false;
+    $('#Memory').prop('checked', false);
+    $('#Latest_ID').attr("disabled", "disabled");
+});
+
+$("#Memory").click(function () {
+    latest_head = 0;
+    $("#Instance").removeAttr("disabled");
+    $("#Local").removeAttr("disabled");
+    $("#Federate").removeAttr("disabled");
+    if ($(this).is(':checked')) {
+        Memory = true;
+        $('#Latest_ID').removeAttr("disabled");
+    } else {
+        Memory = false;
+        $('#Latest_ID').attr("disabled", "disabled");
+    }
+
 });
 
 function Restart_Local() {
@@ -44,9 +64,15 @@ function Fetch_toot() {
     var UrlBase = "";
     if (Is_Federate) {
         UrlBase = 'https://' + $("#Instance").val() + '/api/v1/timelines/public';
+        if (Memory) {
+            UrlBase = UrlBase + "?max_id=" + $('#Latest_ID').val();
+        }
     }
     else {
         UrlBase = 'https://' + $("#Instance").val() + '/api/v1/timelines/public?local="true"';
+        if (Memory) {
+            UrlBase = UrlBase + "&max_id=" + $('#Latest_ID').val();
+        }
     }
     $.ajax({
         type: 'GET',
@@ -63,7 +89,10 @@ function Fetch_toot() {
                     )
                 }
             }
-            latest_head = json[0].id;
+            if (!Memory) {
+                latest_head = json[0].id;
+                $('#Latest_ID').val(json[0].id);
+            }
         }
     });
 }
